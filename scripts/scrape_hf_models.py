@@ -233,6 +233,8 @@ MOE_CONFIGS = {
     "minimax_m2": {"num_experts": 32, "active_experts": 2},
     "mimo_v2": {"num_experts": 128, "active_experts": 8},
     "nemotron3_nano": {"num_experts": 128, "active_experts": 6},
+    "qwen3_5_moe": {"num_experts": 256, "active_experts": 8},
+    "qwen3_vl_moe": {"num_experts": 256, "active_experts": 8},
 }
 
 # Published active parameter counts for well-known MoE models
@@ -261,9 +263,6 @@ MOE_ACTIVE_PARAMS = {
     "MiniMaxAI/MiniMax-M2.5": 10_000_000_000,
     "XiaomiMiMo/MiMo-V2-Flash": 15_000_000_000,
     "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16": 3_000_000_000,
-    "Qwen/Qwen3.5-397B-A17B": 17_000_000_000,
-    "Qwen/Qwen3.5-122B-A10B": 10_000_000_000,
-    "Qwen/Qwen3.5-35B-A3B": 3_000_000_000,
 }
 
 
@@ -339,7 +338,7 @@ def detect_moe(repo_id: str, config: dict | None, architecture: str,
     num_experts = None
     active_experts = None
     if config:
-        num_experts = config.get("num_local_experts")
+        num_experts = config.get("num_local_experts") or config.get("num_experts")
         active_experts = config.get("num_experts_per_tok")
 
     # Check if architecture is in known MoE configs
@@ -1465,6 +1464,8 @@ def main():
             "use_case": "Multimodal, vision and text",
             "pipeline_tag": "image-text-to-text", "architecture": "qwen3_5_moe",
             "hf_downloads": 0, "hf_likes": 0, "release_date": None,
+            "is_moe": True, "num_experts": 256, "active_experts": 8,
+            "active_parameters": 3_000_000_000,
         },
         {
             "name": "Qwen/Qwen3.5-122B-A10B",
@@ -1475,6 +1476,8 @@ def main():
             "use_case": "Multimodal, vision and text",
             "pipeline_tag": "image-text-to-text", "architecture": "qwen3_5_moe",
             "hf_downloads": 0, "hf_likes": 0, "release_date": None,
+            "is_moe": True, "num_experts": 256, "active_experts": 8,
+            "active_parameters": 10_000_000_000,
         },
         {
             "name": "Qwen/Qwen3.5-397B-A17B",
@@ -1485,6 +1488,8 @@ def main():
             "use_case": "Multimodal, vision and text",
             "pipeline_tag": "image-text-to-text", "architecture": "qwen3_5_moe",
             "hf_downloads": 0, "hf_likes": 0, "release_date": None,
+            "is_moe": True, "num_experts": 256, "active_experts": 8,
+            "active_parameters": 17_000_000_000,
         },
     ]
 
